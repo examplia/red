@@ -101,10 +101,8 @@
   </div>
 
   <div id="scare" role="alert" aria-hidden="true">
-    <!-- Spider jumpscare image you provided -->
     <img src="https://as1.ftcdn.net/v2/jpg/13/17/83/92/1000_F_1317839211_zAaUb8NfFsyiJQqzsh4QHRUKUpUXakpp.jpg" alt="Surprise!">
-    <!-- Wilhelm Scream audio embed -->
-    <audio id="scream" src="https://www.myinstants.com/instant/wilhelm-scream/download/mp3" autoplay></audio>
+    <audio id="scream" src="https://www.myinstants.com/instant/wilhelm-scream/download/mp3"></audio>
   </div>
 
   <script>
@@ -114,6 +112,13 @@
       var countEl = document.getElementById('count');
       var scare = document.getElementById('scare');
       var scream = document.getElementById('scream');
+
+      // Today's date as key (YYYY-MM-DD)
+      var today = new Date().toISOString().slice(0,10);
+      var lastScare = localStorage.getItem("lastScareDate");
+
+      // Check if we already scared today
+      var shouldScare = (lastScare !== today);
 
       function update(){
         secsEl.textContent = seconds;
@@ -126,9 +131,11 @@
         if(seconds <= 0){
           clearInterval(tick);
 
-          if(Math.random() < 0.1){
+          if(shouldScare){
             scare.style.display = "flex";
             scream.play();
+            localStorage.setItem("lastScareDate", today);
+
             setTimeout(function(){
               window.location.href = 'https://green.typicalcolors.com';
             }, 2500);
