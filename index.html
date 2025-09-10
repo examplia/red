@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta http-equiv="refresh" content="3;url=https://green.typicalcolors.com" />
+  <title>Redirecting…</title>
+  <style>
+    :root{
+      --bg1: #7a0b0b;
+      --bg2: #cc2a2a;
+      --accent: rgba(255,255,255,0.14);
+    }
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(135deg,var(--bg1) 0%, #4e0a0a 35%, var(--bg2) 100%);
+      color: #fff5f5;
+    }
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .card{
+      max-width:800px;
+      width:100%;
+      text-align:center;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius:16px;
+      padding:48px 32px;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.45);
+      backdrop-filter: blur(6px);
+    }
+    h1{
+      margin:0 0 12px;
+      font-size: clamp(22px, 4vw, 40px);
+      font-weight:700;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.55);
+    }
+    .sub{
+      margin:0 0 20px;
+      opacity:0.9;
+      font-size: clamp(14px,1.8vw,18px);
+    }
+    .redirect-text{
+      display:inline-block;
+      padding:12px 18px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(0,0,0,0.15), rgba(255,255,255,0.05));
+      border: 1px solid rgba(255,255,255,0.08);
+      font-weight:600;
+      letter-spacing:0.01em;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .count{
+      margin-top:14px;
+      font-size:14px;
+      opacity:0.9;
+    }
+    .small{
+      margin-top:18px;
+      font-size:13px;
+      opacity:0.8;
+    }
+    .dot {
+      display:inline-block;
+      width:10px;
+      height:10px;
+      margin-left:10px;
+      border-radius:50%;
+      background: rgba(255,255,255,0.2);
+      animation: pulse 1.5s infinite;
+      vertical-align:middle;
+    }
+    @keyframes pulse{
+      0% { transform: scale(1); opacity:1; }
+      50% { transform: scale(1.45); opacity:0.45; }
+      100% { transform: scale(1); opacity:1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main">
+    <div class="card">
+      <h1>redirecting to green.typicalcolors.com <span class="dot"></span></h1>
+      <p class="sub">You will be taken there automatically in <strong id="secs">3</strong> seconds.</p>
+
+      <div class="redirect-text">redirecting to <code>green.typicalcolors.com</code></div>
+
+      <p class="count" id="count">Redirecting in 3…</p>
+      <p class="small">If the redirect doesn’t work, <a href="https://green.typicalcolors.com" style="color:#ffeaea;text-decoration:underline;">click here</a>.</p>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      var seconds = 3;
+      var secsEl = document.getElementById('secs');
+      var countEl = document.getElementById('count');
+      function update(){
+        secsEl.textContent = seconds;
+        countEl.textContent = 'Redirecting in ' + seconds + '…';
+      }
+      update();
+      var tick = setInterval(function(){
+        seconds--;
+        if(seconds <= 0){
+          clearInterval(tick);
+          secsEl.textContent = 0;
+          countEl.textContent = 'Redirecting now…';
+          window.location.href = 'https://green.typicalcolors.com';
+        } else {
+          update();
+        }
+      },1000);
+    })();
+  </script>
+</body>
+</html>
