@@ -9,7 +9,6 @@
     :root{
       --bg1: #7a0b0b;
       --bg2: #cc2a2a;
-      --accent: rgba(255,255,255,0.14);
     }
     html,body{
       height:100%;
@@ -17,6 +16,7 @@
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       background: linear-gradient(135deg,var(--bg1) 0%, #4e0a0a 35%, var(--bg2) 100%);
       color: #fff5f5;
+      overflow:hidden;
     }
     .wrap{
       min-height:100%;
@@ -42,11 +42,7 @@
       font-weight:700;
       text-shadow: 0 2px 16px rgba(0,0,0,0.55);
     }
-    .sub{
-      margin:0 0 20px;
-      opacity:0.9;
-      font-size: clamp(14px,1.8vw,18px);
-    }
+    .sub{margin:0 0 20px;opacity:0.9;font-size: clamp(14px,1.8vw,18px);}
     .redirect-text{
       display:inline-block;
       padding:12px 18px;
@@ -57,16 +53,8 @@
       letter-spacing:0.01em;
       box-shadow: 0 6px 20px rgba(0,0,0,0.25);
     }
-    .count{
-      margin-top:14px;
-      font-size:14px;
-      opacity:0.9;
-    }
-    .small{
-      margin-top:18px;
-      font-size:13px;
-      opacity:0.8;
-    }
+    .count{margin-top:14px;font-size:14px;opacity:0.9;}
+    .small{margin-top:18px;font-size:13px;opacity:0.8;}
     .dot {
       display:inline-block;
       width:10px;
@@ -82,6 +70,23 @@
       50% { transform: scale(1.45); opacity:0.45; }
       100% { transform: scale(1); opacity:1; }
     }
+
+    /* Jumpscare overlay */
+    #scare {
+      position:fixed;
+      top:0; left:0; right:0; bottom:0;
+      background:black;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+      flex-direction:column;
+    }
+    #scare img {
+      max-width:90%;
+      max-height:90%;
+      object-fit:contain;
+    }
   </style>
 </head>
 <body>
@@ -89,12 +94,17 @@
     <div class="card">
       <h1>redirecting to green.typicalcolors.com <span class="dot"></span></h1>
       <p class="sub">You will be taken there automatically in <strong id="secs">3</strong> seconds.</p>
-
       <div class="redirect-text">redirecting to <code>green.typicalcolors.com</code></div>
-
       <p class="count" id="count">Redirecting in 3…</p>
       <p class="small">If the redirect doesn’t work, <a href="https://green.typicalcolors.com" style="color:#ffeaea;text-decoration:underline;">click here</a>.</p>
     </div>
+  </div>
+
+  <div id="scare" role="alert" aria-hidden="true">
+    <!-- Spider jumpscare image you provided -->
+    <img src="https://as1.ftcdn.net/v2/jpg/13/17/83/92/1000_F_1317839211_zAaUb8NfFsyiJQqzsh4QHRUKUpUXakpp.jpg" alt="Surprise!">
+    <!-- Wilhelm Scream audio embed -->
+    <audio id="scream" src="https://www.myinstants.com/instant/wilhelm-scream/download/mp3" autoplay></audio>
   </div>
 
   <script>
@@ -102,18 +112,29 @@
       var seconds = 3;
       var secsEl = document.getElementById('secs');
       var countEl = document.getElementById('count');
+      var scare = document.getElementById('scare');
+      var scream = document.getElementById('scream');
+
       function update(){
         secsEl.textContent = seconds;
         countEl.textContent = 'Redirecting in ' + seconds + '…';
       }
       update();
+
       var tick = setInterval(function(){
         seconds--;
         if(seconds <= 0){
           clearInterval(tick);
-          secsEl.textContent = 0;
-          countEl.textContent = 'Redirecting now…';
-          window.location.href = 'https://green.typicalcolors.com';
+
+          if(Math.random() < 0.1){
+            scare.style.display = "flex";
+            scream.play();
+            setTimeout(function(){
+              window.location.href = 'https://green.typicalcolors.com';
+            }, 2500);
+          } else {
+            window.location.href = 'https://green.typicalcolors.com';
+          }
         } else {
           update();
         }
